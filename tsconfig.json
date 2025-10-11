@@ -3,12 +3,7 @@
   "compilerOptions": {
     "strict": true,
     "paths": {
-      "@/*": [
-        "./*"
-      ],
-      "@hook/*": [
-        "./hook/*"
-      ]
+      "@/*": ["./src/*"]
     }
   },
   "include": [

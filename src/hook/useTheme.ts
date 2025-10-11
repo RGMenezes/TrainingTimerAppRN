@@ -18,7 +18,7 @@ export const lightColors = {
 
 export const darkColors = {
     primary: "#23B4A1",
-    onPrimary: "#000000",
+    onPrimary: "#ffffff",
     secondary: "#FFB74D",
     onSecondary: "#000000",
     tertiary: "#CE93D8",
@@ -42,5 +42,10 @@ export default function useTheme() {
             main: "System",
         },
         borderRadius: 8,
+        iconSize: {
+            small: 16,
+            medium: 24,
+            large: 32,
+        }
     };
 };
