@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import ButtonIcon from "../button/ButtonIcon";
 
-export default function AppBar({title = "Training Timer", back}: {title?: string, back?: boolean}) {
+export default function AppBar({title = "Training Timer", back = true}: {title?: string, back?: boolean}) {
     const insets = useSafeAreaInsets();
     const theme = useTheme();
 

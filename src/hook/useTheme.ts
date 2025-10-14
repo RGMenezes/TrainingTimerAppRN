@@ -10,7 +10,9 @@ export const lightColors = {
     surface: "#FFFFFF",      // cards, elementos
     onSurface: "#1C1C1E",    // texto sobre surface
     error: "#B00020",
+    onError: "#FFFFFF",
     success: "#4CAF50",
+    onSuccess: "#FFFFFF",
     shadow: "rgba(0,0,0,0.2)",
     background: "#F2F2F7",
     onBackground: "#1C1C1E",
@@ -26,7 +28,9 @@ export const darkColors = {
     surface: "#1C1C1E",
     onSurface: "#FFFFFF",
     error: "#CF6679",
+    onError: "#000000",
     success: "#81C784",
+    onSuccess: "#000000",
     shadow: "rgba(0,0,0,0.7)",
     background: "#121212",
     onBackground: "#FFFFFF",

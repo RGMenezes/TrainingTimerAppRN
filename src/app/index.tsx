@@ -1,22 +1,10 @@
-import { AppBar, H1 } from "@/component";
-import { useTheme } from "@/hook";
-import { StyleSheet, View } from "react-native";
+import { AppBar, H1, ViewMain } from "@/component";
 
 export default function App() {
-
-    const styles = StyleSheet.create({
-        container: {
-            flex: 1,
-            
-            backgroundColor: useTheme().colors.background,
-            color: useTheme().colors.onBackground,
-        }
-    });
-
     return (
-        <View style={styles.container}>
-            <AppBar />
+        <ViewMain>
+            <AppBar back={false} />
             <H1>Training Timer</H1>
-        </View>
+        </ViewMain>
     );
 }

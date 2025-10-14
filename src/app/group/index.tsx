@@ -1,21 +1,11 @@
-import { AppBar, H1 } from "@/component";
-import { useTheme } from "@/hook";
-import { StyleSheet, View } from "react-native";
+import { AppBar, H1, ViewMain } from "@/component";
 
 export default function GroupScreen() {
-    const styles = StyleSheet.create({
-        container: {
-            flex: 1,
-                
-            backgroundColor: useTheme().colors.background,
-            color: useTheme().colors.onBackground,
-        }
-    });
     
     return (
-        <View style={styles.container}>
+        <ViewMain>
             <AppBar back title="Grupos"/>
             <H1>Grupos</H1>
-        </View>
+        </ViewMain>
     );
 }

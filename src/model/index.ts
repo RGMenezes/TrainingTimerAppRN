@@ -1,0 +1,1 @@
+export { Workout, Series, Block } from "@/model/Workout";
