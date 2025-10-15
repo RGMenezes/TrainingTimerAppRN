@@ -6,7 +6,7 @@ interface ViewMainProps extends ViewProps {
     children?: React.ReactNode;
 }
 
-export default function ViewMain({ children, ...rest }: ViewMainProps) {
+export default function ViewMain({ children, style, ...rest }: ViewMainProps) {
     const theme = useTheme();
     const insets = useSafeAreaInsets();
     const styles = StyleSheet.create({
@@ -20,7 +20,7 @@ export default function ViewMain({ children, ...rest }: ViewMainProps) {
     });
         
     return (
-        <View style={styles.container} {...rest}>
+        <View style={[styles.container, style]} {...rest}>
             {children}
         </View>
     );

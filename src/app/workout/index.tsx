@@ -1,39 +1,43 @@
 import { deleteWorkout, fetchWorkouts } from "@/api/workoutApi";
-import { AppBar, BoxMessage, Button, ButtonIcon, WorkoutCard } from "@/component";
+import { AppBar, BoxMessage, ButtonIcon, Loading, ViewError, WorkoutCard } from "@/component";
 import ViewMain from "@/component/layout/ViewMain";
 import { useTheme } from "@/hook";
 import { Workout } from "@/model";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { router } from "expo-router";
 import React, { useState } from "react";
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { FlatList, StyleSheet, Text } from "react-native";
 
 export default function WorkoutScreen() {
     const [message, setMessage] = useState<[string, string]>();
     const { colors } = useTheme();
     const queryClient = useQueryClient();
+    const styles = StyleSheet.create({
+        listContainer: {
+            padding: 16,
+        }
+    });
 
-    // 1. QUERY: Buscar e gerenciar a lista de Workouts
     const { 
         data: workouts, 
         isLoading, 
         isError, 
-        refetch // Função para forçar a atualização manual, se necessário
+        refetch
     } = useQuery<Workout[]>({
-        queryKey: ["workouts"], // Chave de cache
-        queryFn: fetchWorkouts, // A função assíncrona que chama a API (Mock ou real)
+        queryKey: ["workouts"],
+        queryFn: fetchWorkouts,
     });
 
     const deleteMutation = useMutation({
         mutationFn: deleteWorkout,
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["workouts"] });
-        },
+        onSuccess: () => queryClient.invalidateQueries({ queryKey: ["workouts"] }),
     });
 
     if (isLoading) {
         return (
             <ViewMain>
                 <AppBar title="Meus Treinos" />
+                <Loading />
             </ViewMain>
         );
     }
@@ -42,12 +46,7 @@ export default function WorkoutScreen() {
         return (
             <ViewMain>
                 <AppBar title="Meus Treinos" />
-                <View style={styles.centerContainer}>
-                    <Text style={{ color: colors.error, fontSize: 16 }}>
-                        Erro ao carregar Workouts.
-                    </Text>
-                    <Button title="Tentar Novamente" onPress={() => refetch()} />
-                </View>
+                <ViewError message="Erro ao carregar Workouts!" onPress={() => refetch()}/>
             </ViewMain>
         );
     }
@@ -64,8 +63,10 @@ export default function WorkoutScreen() {
                 renderItem={({ item }: { item: Workout }) => <>
                     <WorkoutCard 
                         workout={item} 
-                        isPendingDel={message && message[0] == item.id && deleteMutation.isPending} 
+                        isPendingDel={message && message[0] === item.id && (deleteMutation.isPending || queryClient.isFetching() !== 0)} 
                         onDelete={() => setMessage([item.id, `Deseja mesmo apagar o treino ${item.name}?`])}
+                        onEdit={() => router.push({pathname: "/workout/form", params: {id: item.id}})}
+
                     />
                 </>}
                 ListEmptyComponent={() => (
@@ -78,19 +79,8 @@ export default function WorkoutScreen() {
 
             <ButtonIcon 
                 iconName="add" elevated position="right bottom" size="medium"
-                onPress={() => console.log("Navegar para criar novo Workout")}    
+                onPress={() => router.navigate("/workout/form")}    
             />
         </ViewMain>
     );
 }
-
-const styles = StyleSheet.create({
-    centerContainer: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-    },
-    listContainer: {
-        padding: 16,
-    }
-});

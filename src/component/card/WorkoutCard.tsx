@@ -1,13 +1,21 @@
 import { useTheme } from "@/hook";
 import { Workout } from "@/model";
-import { StyleSheet, View } from "react-native";
-import Button from "../button/Button";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
+import ButtonIcon from "../button/ButtonIcon";
 import H4 from "../text/H4";
 import Small from "../text/Small";
 
-export default function WorkoutCard({ workout , isPendingDel, onDelete}: {workout: Workout, isPendingDel?: boolean, onDelete: () => void}){
-    const theme = useTheme();
+interface WorkoutCardProps {
+    workout: Workout;
+    action?: boolean;
+    isPendingDel?: boolean;
+    onDelete?: () => void;
+    onEdit?: () => void;
+    onPress?: () => void;
+}
 
+export default function WorkoutCard({ workout , isPendingDel, action = true, onDelete, onEdit, onPress}: WorkoutCardProps){
+    const theme = useTheme();
     const styles = StyleSheet.create({
         card: {
             padding: 15,
@@ -17,7 +25,7 @@ export default function WorkoutCard({ workout , isPendingDel, onDelete}: {workou
             justifyContent: "space-between",
             alignItems: "center",
             
-            backgroundColor: theme.colors.surface,
+            backgroundColor: isPendingDel ? theme.colors.error : theme.colors.surface,
             borderColor: theme.colors.shadow,
             borderRadius: theme.borderRadius,
             elevation: 1, // Sombra para Android
@@ -25,21 +33,51 @@ export default function WorkoutCard({ workout , isPendingDel, onDelete}: {workou
             shadowOffset: { width: 0, height: 1 },
             shadowOpacity: 0.2,
             shadowRadius: 1.41,
+        },
+        rowContainer: {
+            flexDirection: "row",
+            gap: 20
         }
     });
 
+    let blocks = workout.blocks.length;
+    let series = 0;
+    let time = 0;
+    workout.blocks.map((block) => {
+        series += block.series.length;
+        block.series.map((serie) => {
+            if(serie.type === "time") time += serie.value;
+            else if(serie.type === "repeat") time += serie.value*4;
+        });
+    });
+    
+
     return (
-        <View style={styles.card}>
-            <View>
-                <H4>{workout.name}</H4>
-                <Small>Blocos: {workout.blocks.length}</Small>
+        <TouchableOpacity onPress={onPress}>
+            <View style={styles.card}>
+                <View>
+                    <H4>{workout.name}</H4>
+                    <View style={styles.rowContainer}>
+                        <Small>Blocos: {blocks}</Small>
+                        <Small>Series: {series}</Small>
+                        <Small>Tempo: {(time/60).toFixed(1)} min</Small>
+                    </View>
+                </View>
+                {action && 
+            <View style={styles.rowContainer}>
+                <ButtonIcon
+                    iconName="edit"
+                    color={theme.colors.onSurface}
+                    onPress={onEdit}
+                />
+                <ButtonIcon
+                    iconName="delete"
+                    color={isPendingDel ? theme.colors.onSurface : theme.colors.error}
+                    onPress={onDelete}
+                    disabled={isPendingDel}
+                />
+            </View>}
             </View>
-            <Button 
-                title={isPendingDel ? "Excluindo..." : "Excluir"}
-                type="error"
-                onPress={onDelete} 
-                disabled={isPendingDel}
-            />
-        </View>
+        </TouchableOpacity>
     );
 }

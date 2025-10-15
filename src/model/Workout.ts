@@ -1,23 +1,23 @@
 export interface Series {
     id: string; 
     name: string;
-    type: "Repetições" | "Tempo"; 
+    type: "repeat" | "time"; 
     value: number; 
-    restAfter: number; 
+    rest: number; 
 }
 
 export interface Block {
     id: string;
     name: string;
-    series: Series[]; 
-    repetitions: number; 
-    restAfterBlock: number; 
+    series: Series[];
+    rest: number; 
 }
 
 export interface Workout {
     id: string;
     name: string;
     blocks: Block[];
-    description?: string;
-    isFavorite: boolean;
+    createDate: Date;
+    updateDate: Date;
+    lastUse?: Date;
 }

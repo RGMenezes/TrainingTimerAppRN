@@ -1,5 +1,5 @@
 import { useTheme } from "@/hook";
-import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, StyleSheet, View } from "react-native";
 
 export default function Loading(){
     const { colors } = useTheme();
@@ -13,7 +13,6 @@ export default function Loading(){
     return (
         <View style={styles.centerContainer}>
             <ActivityIndicator size="large" color={colors.primary} />
-            <Text style={{ color: colors.onBackground, marginTop: 10 }}>Carregando...</Text>
         </View>
     );
 }
