@@ -36,7 +36,7 @@ export default function Input({ label, style, onBlur, ...rest }: InputProps) {
                     if(onBlur) onBlur(e);
                 }}
                 style={[styles.input, style]}
-                placeholderTextColor={theme.colors.placeHolder}
+                placeholderTextColor={theme.colors.contrast}
                 {...rest}
             />
         </View>

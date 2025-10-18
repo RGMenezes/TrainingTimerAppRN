@@ -39,13 +39,16 @@ export default function SeriesForm({ series, onUpdate, onDelete }: SeriesFormPro
     const [value, setValue] = useState(String(series.value)); 
     const [rest, setRest] = useState(String(series.rest));
     const [type, setType] = useState(series.type);
+    const [msg, setMsg] = useState(series.msg);
 
     function handlerUpdateSeries(){
         const updatedSeries: Series = {
             ...series,
-            name: name,
+            name,
             value: Number(value) || 0, 
             rest: Number(rest) || 0,
+            msg,
+            type
         };
         onUpdate(updatedSeries);
     };
@@ -86,6 +89,13 @@ export default function SeriesForm({ series, onUpdate, onDelete }: SeriesFormPro
                 value={rest}
                 placeholder="Descanso (segundos)"
                 keyboardType="numeric"
+            />
+            <Input
+                label="Mensagem: "
+                onChangeText={setMsg}
+                onBlur={handlerUpdateSeries}
+                value={msg}
+                placeholder="Mensagem que será mostrada no treino..."
             />
         </ViewForm>
     );

@@ -6,7 +6,7 @@ interface PProps extends TextProps {
     children?: React.ReactNode;
 }
 
-export default function P({ children , color, ...textProps}: PProps) {
+export default function P({ children , color, style, ...textProps}: PProps) {
     const theme = useTheme();
     if(!color) color = theme.colors.onBackground;
     const styles = StyleSheet.create({
@@ -19,6 +19,6 @@ export default function P({ children , color, ...textProps}: PProps) {
     });
 
     return (
-        <Text style={styles.text} {...textProps}>{children}</Text>
+        <Text style={[styles.text, style]} {...textProps}>{children}</Text>
     );
 }

@@ -4,6 +4,7 @@ export interface Series {
     type: "repeat" | "time"; 
     value: number; 
     rest: number; 
+    msg?: string;
 }
 
 export interface Block {

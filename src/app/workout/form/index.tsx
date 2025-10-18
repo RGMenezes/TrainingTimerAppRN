@@ -5,7 +5,7 @@ import { Block, Workout } from "@/model";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { router, useLocalSearchParams } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { Alert, ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import { v4 as uuidv4 } from "uuid"; // Para IDs únicos
 
 const initialWorkoutState: Omit<Workout, "id"> = {

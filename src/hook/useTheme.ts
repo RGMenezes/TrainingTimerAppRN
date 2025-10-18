@@ -14,7 +14,7 @@ export const lightColors = {
     success: "#4CAF50",
     onSuccess: "#FFFFFF",
     shadow: "rgba(0,0,0,0.2)",
-    placeHolder: "rgba(0, 0, 0, 0.6)",
+    contrast: "rgba(0, 0, 0, 0.6)",
     background: "#F2F2F7",
     onBackground: "#1C1C1E",
 };
@@ -33,7 +33,7 @@ export const darkColors = {
     success: "#81C784",
     onSuccess: "#000000",
     shadow: "rgba(0,0,0,0.7)",
-    placeHolder: "rgba(255, 255, 255, 0.6)",
+    contrast: "rgba(255, 255, 255, 0.6)",
     background: "#121212",
     onBackground: "#FFFFFF",
 };
@@ -53,6 +53,7 @@ export default function useTheme() {
             small: 16,
             medium: 24,
             large: 32,
+            xLarge: 40,
         }
     };
 };

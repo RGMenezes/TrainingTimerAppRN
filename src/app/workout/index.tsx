@@ -66,7 +66,7 @@ export default function WorkoutScreen() {
                         isPendingDel={message && message[0] === item.id && (deleteMutation.isPending || queryClient.isFetching() !== 0)} 
                         onDelete={() => setMessage([item.id, `Deseja mesmo apagar o treino ${item.name}?`])}
                         onEdit={() => router.push({pathname: "/workout/form", params: {id: item.id}})}
-
+                        onPress={() => router.push({pathname: "/workout/execute", params: {id: item.id}})}
                     />
                 </>}
                 ListEmptyComponent={() => (

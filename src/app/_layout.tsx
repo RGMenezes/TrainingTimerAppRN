@@ -10,6 +10,7 @@ export default function RootLayout() {
                 <Stack.Screen name="index" options={{ headerShown: false }} />
                 <Stack.Screen name="workout/index" options={{ headerShown: false }} />
                 <Stack.Screen name="workout/form/index" options={{ headerShown: false }} />
+                <Stack.Screen name="workout/execute/index" options={{ headerShown: false }} />
                 <Stack.Screen name="group/index" options={{ headerShown: false }} />
                 {/* ... outras rotas ... */}
             </Stack>

@@ -6,7 +6,7 @@ interface H1Props extends TextProps {
     children?: React.ReactNode;
 }
 
-export default function H1({ children , color, ...textProps}: H1Props) {
+export default function H1({ children , color, style, ...textProps}: H1Props) {
     color = useTheme().colors.onBackground;
     const styles = StyleSheet.create({
         text: {
@@ -14,11 +14,10 @@ export default function H1({ children , color, ...textProps}: H1Props) {
             fontWeight: "bold",
             color: color,
             fontFamily: useTheme().font.main,
-            
         }
     });
 
     return (
-        <Text {...textProps} style={styles.text}>{children}</Text>
+        <Text {...textProps} style={[styles.text, style]}>{children}</Text>
     );
 }

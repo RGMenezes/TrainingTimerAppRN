@@ -5,7 +5,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 interface ButtonIconProps extends TouchableOpacityProps {
     iconName: React.ComponentProps<typeof MaterialIcons>["name"];
-    size?: "small" | "medium" | "large";
+    size?: "small" | "medium" | "large" | "xLarge";
     color?: string;
     elevated?: boolean;
     position?: "left top" | "right top" | "left bottom" | "right bottom";
@@ -18,8 +18,8 @@ export default function ButtonIcon({ iconName, size = "medium", color = "black",
 
     const style = StyleSheet.create({
         button: {            
-            height: 40,
-            width: 40,
+            height: size === "xLarge" ? 50 : 40,
+            width: size === "xLarge" ? 50 : 40,
             justifyContent: "center",
             alignItems: "center",
         },

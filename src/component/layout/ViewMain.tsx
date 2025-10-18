@@ -4,9 +4,10 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 interface ViewMainProps extends ViewProps {
     children?: React.ReactNode;
+    backgroundColor?: string;
 }
 
-export default function ViewMain({ children, style, ...rest }: ViewMainProps) {
+export default function ViewMain({ children, style, backgroundColor, ...rest }: ViewMainProps) {
     const theme = useTheme();
     const insets = useSafeAreaInsets();
     const styles = StyleSheet.create({
@@ -14,7 +15,7 @@ export default function ViewMain({ children, style, ...rest }: ViewMainProps) {
             flex: 1,
             paddingBottom: insets.bottom,
 
-            backgroundColor: theme.colors.background,
+            backgroundColor: backgroundColor ? backgroundColor : theme.colors.background,
             color: theme.colors.onBackground,
         }
     });

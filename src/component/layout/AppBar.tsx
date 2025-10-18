@@ -45,7 +45,7 @@ export default function AppBar({title = "Training Timer", back = true}: {title?:
             </View>
             <View style={styles.actionsBox}>
                 <ButtonIcon 
-                    iconName="assignment-turned-in" color={theme.colors.onPrimary} 
+                    iconName="assignment" color={theme.colors.onPrimary} 
                     onPress={() => router.navigate("/group")}
                 />
                 <ButtonIcon 
