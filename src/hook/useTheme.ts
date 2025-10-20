@@ -17,6 +17,11 @@ export const lightColors = {
     contrast: "rgba(0, 0, 0, 0.6)",
     background: "#F2F2F7",
     onBackground: "#1C1C1E",
+    playerStart: "#4A90E2",   
+    playerExercise: "#66BB6A",
+    playerRestSeries: "#FFB74D",
+    playerRestBlock: "#ADD8E6",
+    playerEnd: "#FF9800",
 };
 
 export const darkColors = {
@@ -36,6 +41,11 @@ export const darkColors = {
     contrast: "rgba(255, 255, 255, 0.6)",
     background: "#121212",
     onBackground: "#FFFFFF",
+    playerStart: "#3E7DCF",   
+    playerExercise: "#4CAF50",
+    playerRestSeries: "#FF9800",
+    playerRestBlock: "#5D8AA8",
+    playerEnd: "#FF5722",
 };
 
 export default function useTheme() {

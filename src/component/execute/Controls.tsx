@@ -40,7 +40,7 @@ export default function Controls({ onBack, isDisableBack, onNext, isDisableNext,
                 onPress={() => {
                     if(!isDisablePause) onPause();
                 }}
-                iconName={isPause ? "play-arrow" : "pause"} 
+                iconName={isDisablePause ? "fitness-center" : isPause ? "play-arrow" : "pause"} 
             />
             <ButtonIcon 
                 size="xLarge"

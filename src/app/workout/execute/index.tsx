@@ -1,8 +1,10 @@
 import { fetchWorkoutById } from "@/api/workoutApi";
 import { Controls, H1, Loading, P, Stepper, Timer, TStepper, ViewMain } from "@/component";
+import { useSoundPlayer, useTheme } from "@/hook";
 import { useQuery } from "@tanstack/react-query";
+import { useKeepAwake } from "expo-keep-awake";
 import { router, useLocalSearchParams } from "expo-router";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 
 interface IStep {
@@ -11,11 +13,14 @@ interface IStep {
     msg?: string;
     serieType?: "repeat" | "time";
     type: TStepper;
+    backgroundColor?: string;
 };
 
 export default function ExecuteWorkout(){
+    useKeepAwake();
     const params = useLocalSearchParams();
     const id = params.id as string | undefined;
+    const theme = useTheme();
     const styles = StyleSheet.create({ 
         containerScreen: {
             padding: 16,
@@ -43,10 +48,12 @@ export default function ExecuteWorkout(){
         queryKey: ["workout", id],
         queryFn: () => fetchWorkoutById(id!)
     });
+    const { playSound, isLoaded } = useSoundPlayer();
 
     const [steps, setSteps] = useState<IStep[]>([]);
     const [step, setStep] = useState<IStep>();
     const [timer, setTimer] = useState(0);
+    const [pause, setPause] = useState(true);
     const [stepIndex, setStepIndex] = useState(0);
     
     useEffect(() => {
@@ -77,7 +84,8 @@ export default function ExecuteWorkout(){
                     value: serie.value,
                     type,
                     msg: serie.msg,
-                    serieType: serie.type
+                    serieType: serie.type,
+                    backgroundColor: theme.colors.playerExercise
                 });
                 if(serieI < block.series.length-1){
                     steps.push({
@@ -85,6 +93,7 @@ export default function ExecuteWorkout(){
                         value: serie.rest,
                         msg: `Próximo\n${block.series[serieI + 1].name}`,
                         type: "restSerie",
+                        backgroundColor: theme.colors.playerRestSeries
                     });
                 }
             });
@@ -93,7 +102,8 @@ export default function ExecuteWorkout(){
                     name: "Descanso entre blocos",
                     value: block.rest,
                     msg: `Próximo\n${workout.blocks[blockI + 1].series[0].name}`,
-                    type: "restBlock"
+                    type: "restBlock",
+                    backgroundColor: theme.colors.playerRestBlock
                 });
             }
         });
@@ -101,31 +111,55 @@ export default function ExecuteWorkout(){
         setStep(steps[0]);
         setStepIndex(0);
 
-    }, [fetchedWorkout, id, isLoading]);
+    }, [fetchedWorkout, id, isLoading, theme]);
 
     const handleBack = () => {
         if(stepIndex > 0) setStepIndex(stepIndex - 1);
     };
-    const handleNext = () => {
+    const handleNext = useCallback(() => {
         if(steps.length - 1 > stepIndex) setStepIndex(stepIndex + 1);
+    }, [stepIndex, steps.length]);
+    const handlePause = () => {
+        playSound("pause");
+        setPause(!pause);
     };
 
     useEffect(() => {
-        setStep(steps[stepIndex]);
+        const newStep = steps[stepIndex];
+        if(!newStep) return;
+
+        setStep(newStep);
+        setTimer(newStep.value);
+        if(newStep.serieType === "repeat") setPause(true);
+        else setPause(false);
     }, [stepIndex, steps]);
 
-    if (isLoading) return <ViewMain><Loading /></ViewMain>;
+    useEffect(() => {
+
+        if(pause) return;
+        if(timer <= 3 && timer >= 1){
+            playSound("countdown");
+        }else if(timer === 0){
+            playSound("end");
+            handleNext();
+        }
+        
+        const intervalId = setInterval(() => setTimer(timer - 1), 1000);
+        return () => clearInterval(intervalId);
+    }, [timer, pause, handleNext, playSound]);
+
+    if (isLoading || !isLoaded) return <ViewMain><Loading /></ViewMain>;
     return (
-        <ViewMain>
+        <ViewMain style={{backgroundColor: step?.backgroundColor}}>
             <Stepper value={stepIndex} typeSteps={steps.map(item => item.type)} />
             <View style={styles.containerScreen}>
                 <View style={styles.containerH1}>
                     <H1 style={styles.text}>{step?.name}</H1>
                 </View>
-                <Timer value={timer} total={step?.value}/>
+                <Timer backgroundColor={step?.backgroundColor} value={timer} total={step?.value}/>
                 <Controls 
                     onBack={handleBack} isDisableBack={stepIndex === 0} 
-                    onPause={() => {}} 
+                    onPause={handlePause} isPause={pause} isDisablePause={step?.serieType === "repeat"}
                     onNext={handleNext} isDisableNext={stepIndex === steps.length - 1}
                 />
                 <View style={styles.containerP}>

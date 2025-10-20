@@ -1,3 +1,4 @@
+import useSoundPlayer from "./useSoundPlayer";
 import useTheme from "./useTheme";
 
-export { useTheme };
+export { useSoundPlayer, useTheme };

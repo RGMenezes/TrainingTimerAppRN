@@ -31,11 +31,9 @@ export default function Stepper({ value, typeSteps }: { value: number, typeSteps
         };
 
         if(step === "restBlock") {
-            newStep.color = colors.secondary;
             newStep.name = "square";
         }else if(step === "restSerie") {
-            newStep.color = colors.tertiary;
-            newStep.name = "square";
+            newStep.name = "stars";
         }
 
         if(index === value) newStep.size = iconSize.small;
