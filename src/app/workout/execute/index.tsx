@@ -113,29 +113,36 @@ export default function ExecuteWorkout(){
 
     }, [fetchedWorkout, id, isLoading, theme]);
 
-    const handleBack = () => {
-        if(stepIndex > 0) setStepIndex(stepIndex - 1);
-    };
-    const handleNext = useCallback(() => {
-        if(steps.length - 1 > stepIndex) setStepIndex(stepIndex + 1);
-    }, [stepIndex, steps.length]);
-    const handlePause = () => {
-        playSound("pause");
-        setPause(!pause);
-    };
-
-    useEffect(() => {
-        const newStep = steps[stepIndex];
+    const handleSteps = useCallback((iStep: number) => {
+        const newStep = steps[iStep];
         if(!newStep) return;
 
         setStep(newStep);
         setTimer(newStep.value);
         if(newStep.serieType === "repeat") setPause(true);
         else setPause(false);
-    }, [stepIndex, steps]);
+    }, [steps]);
+
+    const handleBack = () => {
+        if(stepIndex > 0) {
+            const newIStep = stepIndex - 1;
+            handleSteps(newIStep);
+            setStepIndex(newIStep);
+        };
+    };
+    const handleNext = useCallback(() => {
+        if(steps.length - 1 > stepIndex) {
+            const newIStep = stepIndex + 1;
+            handleSteps(newIStep);
+            setStepIndex(newIStep);
+        };
+    }, [stepIndex, steps.length, handleSteps]);
+    const handlePause = () => {
+        playSound("pause");
+        setPause(!pause);
+    };
 
     useEffect(() => {
-
         if(pause) return;
         if(timer <= 3 && timer >= 1){
             playSound("countdown");
